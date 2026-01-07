@@ -21,7 +21,7 @@ public class EscapeGame {
     }
     /**
      * Gibt an ob, das Spiel aktuell läuft 
-     * @return true, wenn Spiel läuft, false wenn spiel nicht läuft
+     * @return true, wenn Spiel läuft, false wenn Spiel nicht läuft
      */
     public boolean isGameRunning() {
         return gameRunning;

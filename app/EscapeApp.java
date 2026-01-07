@@ -57,7 +57,7 @@ public class EscapeApp {
     }
     /**
      * Fehlereingabe wird dem Benutzer gemeldet 
-     * @param input
+     * 
      */
     private void handleUserInput(String input) {
         switch (input) {
