@@ -1,4 +1,4 @@
-
+package app;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,7 +68,7 @@ public class EscapeApp {
                 break;
             // ...
             case "6":
-                break;
+                break; 
             default:
                 System.out.println("Invalid input. Please choose a correct number between 1 and 6");
                 break;
