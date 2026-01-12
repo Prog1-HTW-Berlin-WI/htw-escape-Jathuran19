@@ -114,6 +114,7 @@ public class EscapeApp {
                 break;
             case "6":
                 System.out.println("See you next time!");
+                System.exit(0);
                 break; 
             default:
                 System.out.println("Invalid input. Please choose a correct number between 1 and 6");
