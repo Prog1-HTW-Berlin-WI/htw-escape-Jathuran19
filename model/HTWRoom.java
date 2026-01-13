@@ -6,13 +6,14 @@ import java.io.Serializable;
 public class HTWRoom implements Serializable {
     private String identifier;
     private String description;
-    private lecturer[] Lecturer;
+    private Lecturer lecturer;
 
-    public HTWRoom(String identifier, String description){
+    public HTWRoom(String identifier, String description, Lecturer lecturer){
             this.identifier = identifier;
             this.description = description;
             this.lecturer = lecturer;
 
+    }
 
     public String getIdentifier() {
         return this.identifier;
@@ -30,15 +31,14 @@ public class HTWRoom implements Serializable {
         this.description = description;
     }
 
-    public lecturer[] getLecturer() {
-        return this.Lecturer;
+    public Lecturer getLecturer() {
+        return this.lecturer;
     }
 
-    public void setLecturer(lecturer[] Lecturer) {
-        this.Lecturer = Lecturer;
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
     }
-    
-    }
+
 
 
 

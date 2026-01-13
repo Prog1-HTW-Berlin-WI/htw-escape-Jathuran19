@@ -10,11 +10,11 @@ public class Lecturer implements Serializable {
         this.name = name;
         this.hasSigned = hasSigned;
 
-
+    }
     public String getName() {
         return this.name;
     }
-    
+
     public boolean isHasSigned() {
         return this.hasSigned;
     }
@@ -23,9 +23,14 @@ public class Lecturer implements Serializable {
         return this.hasSigned;
     }
     
-
-
+    public boolean isReadyToSign() {
+    return !hasSigned;
     }
+    
+    public void sign() {
+    hasSigned = true;
+    }
+    
 
 
 
