@@ -1,4 +1,4 @@
-
+package app;
 
 import model.Hero;
 import model.HTWRoom;
