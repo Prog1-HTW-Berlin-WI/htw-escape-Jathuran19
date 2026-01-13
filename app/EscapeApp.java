@@ -59,7 +59,6 @@ public class EscapeApp {
         System.out.println("(4) Save Game");
         System.out.println("(5) Delete Game");
         }
-
         System.out.println("(6) Quit");
         System.out.println("");
         System.out.println("Please choose a number between 1 and 6: ");
