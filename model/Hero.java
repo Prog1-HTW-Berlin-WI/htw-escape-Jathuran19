@@ -4,21 +4,12 @@ import java.io.Serializable;
 
 public class Hero implements Serializable {
        
-<<<<<<< HEAD
     private String name;
     private int healthPoints;
     private int experiencePoints;
     private Lecturer[] signedExerciseLeaders;
 
     public Hero (String name, int healthPoints, int experiencePoints){
-=======
-        private String name;
-        private int healthPoints;
-        private int experiencePoints;
-        private Lecturer[] signedExerciseLeaders;
-
-        public Hero (String name, int healthPoints, int experiencePoints){
->>>>>>> b2a11dacb985977411b649ca68754de85492c5fa
             this.name = name;
             this.healthPoints = 50;
             this.experiencePoints = 0;
@@ -42,10 +33,7 @@ public class Hero implements Serializable {
         return this.signedExerciseLeaders;
     }
 
-<<<<<<< HEAD
     //Methoden:
-=======
->>>>>>> b2a11dacb985977411b649ca68754de85492c5fa
 
     // Lebenspunkte können Leben verlieren je nach Schaden und die Untergrenze ist 0 Lebenspunkte
     public void takeDamage(int amount){
@@ -80,47 +68,29 @@ public class Hero implements Serializable {
     public int attack(){
         double damage = experiencePoints * 2.3 + 1;
         double chance = Math.random();
-<<<<<<< HEAD
         if(chance < 0.13){
             return 0;
         }
         if(chance < 0.25){
             damage * 2;
-=======
-        if( chance < 0.13){
-            return 0;
-        }
-        if(chance < 0.12){
-            return damage * 2;
->>>>>>> b2a11dacb985977411b649ca68754de85492c5fa
         }
         
     }
         public void signExerciseLeader(Lecturer lecturer) {
     if (lecturer == null) {
         return;
-<<<<<<< HEAD
         }
-=======
-    }
->>>>>>> b2a11dacb985977411b649ca68754de85492c5fa
     for (int i = 0; i < signedExerciseLeaders.length; i++) {
     if (signedExerciseLeaders[i] != null &&
         signedExerciseLeaders[i].getName().equals(lecturer.getName())) {
         return;  
-<<<<<<< HEAD
             }
         }
-=======
-    }
-}
->>>>>>> b2a11dacb985977411b649ca68754de85492c5fa
     for (int i = 0; i < signedExerciseLeaders.length; i++) {
         if (signedExerciseLeaders[i] == null) {
             signedExerciseLeaders[i] = lecturer;
             lecturer.setHasSigned(true);
             return;
-<<<<<<< HEAD
             }
         }
     }
@@ -142,35 +112,6 @@ public class Hero implements Serializable {
     }
 
  
-=======
-        }
-    }
-}
-
-public void int getExperiencePoints(){
-    return experiencePoints;
-}
-
-public void addExperiencePoints(int experiencePoints) {
-    this.experiencePoints += experiencePoints;
-}
-
-public boolean isOperational(){
-    if(healthPoints <= 0){
-        System.out.println("--You are dead!!!--");
-        return false;
-    }
-    return true;
-}
-
-
-
-
-
-
-
-        }   
->>>>>>> b2a11dacb985977411b649ca68754de85492c5fa
     // Bitte serialVersionUID beibehalten, damit die Klasse bei der
     // Speicherung als Datei (Serialisierung) und beim Laden (Deserialisierung)
     // konsistent bleibt und Versionierungsprobleme vermieden werden.

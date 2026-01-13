@@ -9,13 +9,8 @@ public class Lecturer implements Serializable {
     public Lecturer(String name, boolean hasSigned){
         this.name = name;
         this.hasSigned = hasSigned;
-<<<<<<< HEAD
     }
 
-=======
-
-    }
->>>>>>> b2a11dacb985977411b649ca68754de85492c5fa
     public String getName() {
         return this.name;
     }
@@ -28,7 +23,6 @@ public class Lecturer implements Serializable {
         return this.hasSigned;
     }
     
-<<<<<<< HEAD
     //Methoden:
     public boolean isReadyToSign() {
         return !hasSigned;
@@ -38,44 +32,6 @@ public class Lecturer implements Serializable {
         hasSigned = true;
     }
     
-=======
-    public boolean isReadyToSign() {
-    return !hasSigned;
-    }
-    
-    public void sign() {
-    hasSigned = true;
-    }
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> b2a11dacb985977411b649ca68754de85492c5fa
     // Bitte serialVersionUID beibehalten, damit die Klasse bei der
     // Speicherung als Datei (Serialisierung) und beim Laden (Deserialisierung)
     // konsistent bleibt und Versionierungsprobleme vermieden werden.
