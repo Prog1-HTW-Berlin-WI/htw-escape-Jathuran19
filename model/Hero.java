@@ -16,7 +16,7 @@ public class Hero implements Serializable {
             this.signedExerciseLeaders = new Lecturer[5];
         }
 
-
+    
     public String getName() {
         return this.name;
     }
@@ -72,9 +72,9 @@ public class Hero implements Serializable {
             return 0;
         }
         if(chance < 0.25){
-            damage * 2;
+            damage = damage * 2;
         }
-        
+        return (int) damage;
     }
         public void signExerciseLeader(Lecturer lecturer) {
     if (lecturer == null) {
@@ -93,10 +93,6 @@ public class Hero implements Serializable {
             return;
             }
         }
-    }
-
-    public void int getExperiencePoints(){
-    return experiencePoints;
     }
 
     public void addExperiencePoints(int experiencePoints) {

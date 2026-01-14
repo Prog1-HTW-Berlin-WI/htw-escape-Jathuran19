@@ -6,9 +6,9 @@ public class Lecturer implements Serializable {
     private String name;
     private boolean hasSigned;
 
-    public Lecturer(String name, boolean hasSigned){
+    public Lecturer(String name){
         this.name = name;
-        this.hasSigned = hasSigned;
+        this.hasSigned = false;
     }
 
     public String getName() {
@@ -19,15 +19,10 @@ public class Lecturer implements Serializable {
         return this.hasSigned;
     }
 
-    public boolean getHasSigned() {
-        return this.hasSigned;
-    }
-    
     //Methoden:
     public boolean isReadyToSign() {
         return !hasSigned;
     }
-    
     public void sign() {
         hasSigned = true;
     }
