@@ -115,7 +115,6 @@ public class EscapeApp {
      * Startet neues Spiel
      */
     private void startGame() {
-        System.out.println("Enter your Heros name: ");
         this.game = new EscapeGame();
         resumeGame();
     }
