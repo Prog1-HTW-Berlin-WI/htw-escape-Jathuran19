@@ -177,7 +177,7 @@ public class EscapeApp {
     }
 
     /**
-     * Spiel beendet
+     * Spiel beendet.
      * 
      * @return true, wenn das Spiel beendet ist
      */
@@ -194,4 +194,4 @@ public class EscapeApp {
         return new File(SAVE_FILE_NAME).exists();
     }
 
-}
+} 

@@ -16,11 +16,12 @@ import java.util.Scanner;
  */
 public class EscapeGame {
     private Hero hero;
-    private final HTWRoom[] rooms = new HTWRoom[3];
+    private HTWRoom[] rooms = new HTWRoom[30];
     private boolean gameRunning = true;
     private boolean gameFinished = false;
     private int round = 0;
     private final int RoundLimit = 24;
+    private int question = 0;
 
     /**
      * Neue Spieler wird erstellt
@@ -65,6 +66,48 @@ public class EscapeGame {
         this.gameFinished = gameFinished;
     }
 
+    private void initRooms() {
+
+        Lecturer l1 = new Lecturer("Reni Amalia Safitri");
+        Lecturer l2 = new Lecturer("Lyudmila Vaseva");
+        Lecturer l3 = new Lecturer("Janine Gärtner");
+        Lecturer l4 = new Lecturer("Selim Gnaoui");
+        Lecturer l5 = new Lecturer("Thomas Poeser");
+
+        rooms[0] = new HTWRoom("143", "Lecture hall", l1);
+        rooms[1] = new HTWRoom("144", "Lecture hall", l4);
+        rooms[2] = new HTWRoom("018", "Classroom", null);
+        rooms[3] = new HTWRoom("236", "Lecture hall", l2);
+        rooms[4] = new HTWRoom("015", "Classroom", null);
+        rooms[5] = new HTWRoom("142", "Lecture hall", l5);
+        rooms[6] = new HTWRoom("219", "Classroom", null);
+        rooms[7] = new HTWRoom("013", "Classroom", null);
+        rooms[8] = new HTWRoom("014", "Classroom", null);
+        rooms[9] = new HTWRoom("214", "Lecture hall", l3);
+        rooms[10] = new HTWRoom("016", "Classroom", null);
+        rooms[11] = new HTWRoom("017", "Classroom", null);
+        rooms[12] = new HTWRoom("142", "Classroom", null);
+        rooms[13] = new HTWRoom("236", "Classroom", null);
+        rooms[14] = new HTWRoom("145", "Classroom", null);
+        rooms[15] = new HTWRoom("146", "Classroom", null);
+        rooms[16] = new HTWRoom("147", "Classroom", null);
+        rooms[17] = new HTWRoom("148", "Classroom", null);
+        rooms[18] = new HTWRoom("210", "Classroom", null);
+        rooms[19] = new HTWRoom("211", "Classroom", null);
+        rooms[20] = new HTWRoom("212", "Classroom", null);
+        rooms[21] = new HTWRoom("213", "Classroom", null);
+        rooms[22] = new HTWRoom("215", "Classroom", null);
+        rooms[23] = new HTWRoom("216", "Classroom", null);
+        rooms[24] = new HTWRoom("217", "Classroom", null);
+        rooms[25] = new HTWRoom("218", "Classroom", null);
+        rooms[26] = new HTWRoom("000", "Office corridor", null);
+        rooms[27] = new HTWRoom("111", "Office corridor", null);
+        rooms[28] = new HTWRoom("222", "Office corridor", null);
+        rooms[29] = new HTWRoom("333", "Office corridor", null);
+        rooms[30] = new HTWRoom("123", "Office corridor", null);
+
+    }
+
     /**
      * Spiel fragt nach Aktivität
      */
@@ -100,7 +143,6 @@ public class EscapeGame {
                 case "3":
                     showChecklist();
                     break;
-
                 case "4":
                     takeRest(scanner);
                     break;
@@ -127,6 +169,11 @@ public class EscapeGame {
 
     public void exploreHTW(Scanner scanner) {
 
+        if (hasAllSignatures()) {
+            meetProfessor(scanner);
+            return;
+        }
+
         System.out.println("You explore the HTW");
 
         // Runden überprüfung
@@ -140,6 +187,10 @@ public class EscapeGame {
 
         round = round + 1;
         System.out.println("-- Round: " + round + " / " + RoundLimit + " --");
+
+        // Raum auswählen
+        HTWRoom room = rooms[(int) (Math.random() * rooms.length)];
+        System.out.println(room.getIdentifier() + ": " + room.getDescription());
 
         double risk = Math.random();
         // Mit einer Wahrscheinlichkeit von 20 Prozent verläuft die Erkundung
@@ -185,13 +236,30 @@ public class EscapeGame {
 
             String choice = scanner.nextLine();
 
-            if (choice.equals("1")) {
-                System.out.println("You decided to fight.");
-            } else if (choice.equals("2")) {
-                System.out.println("You decided to flee.");
-            } else {
-                System.out.println("Invalid input.");
+            if (choice.equals("2")) {
+                if (hero.flee()) {
+                    System.out.println("You escaped successfully!");
+                    return;
+                } else {
+                    System.out.println("Escape failed!");
+                }
             }
+
+            while (hero.isOperational() && !alien.isDefeated()) {
+
+                alien.takeDamage(hero.attack());
+
+                if (alien.isDefeated()) {
+                    System.out.println("Alien defeated!");
+                    hero.addExperiencePoints(5);
+                    return;
+                }
+
+                hero.takeDamage(3);
+            }
+
+            System.out.println("You lost the fight!");
+            hero.addExperiencePoints(1);
         }
     }
 
@@ -209,9 +277,6 @@ public class EscapeGame {
             System.out.println("The lecturer already signed your checklist.");
         }
     }
-
-
-
 
     private void showHeroStatus() {
         System.out.println("--- HERO STATUS ---");
@@ -233,8 +298,6 @@ public class EscapeGame {
         System.out.println("Signatures: " + signed + " /5");
     }
 
-
-
     private void showChecklist() {
         System.out.println("--- CHECKLIST ---");
         Lecturer[] list = hero.getSignedExerciseLeaders();
@@ -246,8 +309,6 @@ public class EscapeGame {
             }
         }
     }
-
-
 
     private void takeRest(Scanner scanner) {
         System.out.println("--- REST ---");
@@ -270,10 +331,104 @@ public class EscapeGame {
         System.out.println("Round: " + round + " /24");
     }
 
-
-
     private void exitGame() {
         System.out.println("Leaving the game.");
+        gameRunning = false;
+        gameFinished = true;
+    }
+
+    private boolean hasAllSignatures() {
+        Lecturer[] list = hero.getSignedExerciseLeaders();
+        int count = 0;
+
+        for (int i = 0; i < list.length; i++) {
+            if (list[i] != null) {
+                count++;
+            }
+        }
+        return count == list.length;
+    }
+
+    private void meetProfessor(Scanner scanner) {
+        System.out.println("Professor Majuntke appears!");
+        System.out.println(
+                "Professor Majuntke will give you three questions that you must answer correctly to get out of HTW. If you fail this quiz, you have one last attempt.");
+
+        boolean firstTry = askQuestion(scanner);
+
+        if (firstTry) {
+            winGame();
+        } else {
+            System.out.println("Wrong answer! You get one more chance...");
+            boolean secondTry = askQuestion(scanner);
+
+            if (secondTry) {
+                winGame();
+            } else {
+                loseGame();
+            }
+        }
+    }
+
+    private boolean askQuestion(Scanner scanner) {
+
+        // Frage 1
+        if (question == 0) {
+            question++;
+
+            System.out.println("Question 1: What does 'if' do in Java?");
+            System.out.println("(1) It repeats a block of code");
+            System.out.println("(2) It checks a condition and runs code if true");
+            System.out.println("(3) It creates a new class");
+            System.out.println("(4) It prints text automatically");
+
+            String answer = scanner.nextLine();
+            return answer.equals("2");
+        }
+
+        // Frage 2
+        if (question == 1) {
+            question++;
+
+            System.out.println("Question 2: Which type is used for whole numbers?");
+            System.out.println("(1) String");
+            System.out.println("(2) int");
+            System.out.println("(3) boolean");
+            System.out.println("(4) double[]");
+
+            String answer = scanner.nextLine();
+            return answer.equals("2");
+        }
+
+        // Frage 3
+        if (question == 2) {
+            question++;
+
+            System.out.println("Question 3: What does 'int' stand for?");
+            System.out.println("(1) Internet");
+            System.out.println("(2) Integer");
+            System.out.println("(3) Interface");
+            System.out.println("(4) Internal");
+
+            String answer = scanner.nextLine();
+            return answer.equals("2");
+        }
+
+        // keine Frage mehr
+        return false;
+    }
+
+    private void winGame() {
+        System.out.println("Correct! You passed!");
+        System.out.println("You receive your certificate.");
+        System.out.println("The doors open. You escaped HTW!");
+        gameRunning = false;
+        gameFinished = true;
+    }
+
+    private void loseGame() {
+        System.out.println("Wrong again!");
+        System.out.println("An evil alien has kidnapped Professor Majuntke.");
         gameRunning = false;
         gameFinished = true;
     }
