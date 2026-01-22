@@ -1,7 +1,11 @@
 package model;
 
 import java.io.Serializable;
-
+/**
+ * Klasse eines Aliens und dessen Eigenschaften
+ * @author Arda Bingöl
+ * @author Jathuran Sathananthan
+ */
 public abstract class Alien implements Serializable {
 
     // Bitte serialVersionUID beibehalten, damit die Klasse bei der
@@ -38,6 +42,11 @@ public abstract class Alien implements Serializable {
         return greeting;
     }
 
+    /**
+     * Verringert die Lebenspunkte des Aliens um den angegebenen Schaden.
+     * Die Lebenspunkte können dabei nicht unter 0 fallen.
+     * @param amount Schadensmenge
+     */
     public void takeDamage(int amount) {
         lifePoints -= amount;
         if (lifePoints < 0) {
@@ -46,6 +55,10 @@ public abstract class Alien implements Serializable {
         System.out.println(name + " got " + amount + " damage. Remaining life points: " + lifePoints);
     }
 
+    /**
+     * Prüft, ob das Alien besiegt wurde.
+     * @return true, wenn keine Lebenspunkte mehr vorhanden sind, sonst false
+     */
     public boolean isDefeated() {
         if (lifePoints <= 0) {
             return true;

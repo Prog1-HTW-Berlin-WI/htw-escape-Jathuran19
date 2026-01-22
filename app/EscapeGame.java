@@ -11,12 +11,14 @@ import java.util.Scanner;
 /**
  * Steuert den Ablauf und Zustand des Spiels
  * 
+ *
  * @author Jathuran Sathananthan
  * @author Arda Bingöl
  */
+
 public class EscapeGame {
     private Hero hero;
-    private HTWRoom[] rooms = new HTWRoom[30];
+    private HTWRoom[] rooms = new HTWRoom[31];
     private boolean gameRunning = true;
     private boolean gameFinished = false;
     private int round = 0;
@@ -24,10 +26,11 @@ public class EscapeGame {
     private int question = 0;
 
     /**
-     * Neue Spieler wird erstellt
+     * Neue Spieler wird erstellt und Raum wird aufgerufen
      */
     public EscapeGame() {
         this.hero = null;
+        initRooms();
     }
 
     /**
@@ -65,6 +68,12 @@ public class EscapeGame {
     public void setGameFinished(boolean gameFinished) {
         this.gameFinished = gameFinished;
     }
+
+    /**
+     * Breitet alle Räume des Escape Games vor.
+     * Den Räumen werden Raumnummer, Raumtyp sowie optional ein Dozent zugewiesen.
+     * Die erstellten Räume werden im rooms-Array gespeichert.
+     */
 
     private void initRooms() {
 
@@ -109,8 +118,11 @@ public class EscapeGame {
     }
 
     /**
-     * Spiel fragt nach Aktivität
+     * Startet das Spiel und zeigt das Hauptmenü an.
+     * Liest die Benutzereingaben ein und führt die ausgewählte Aktion aus,
+     * solange das Spiel läuft.
      */
+
     public void run() {
         System.out.println("Welcome!");
         Scanner scanner = new Scanner(System.in);
@@ -167,7 +179,17 @@ public class EscapeGame {
         return hero;
     }
 
+    /**
+     * Ermöglicht dem Spieler, die HTW zu erkunden.
+     * Eine neue Runde wird gestartet, ein zufälliger Raum ausgewählt
+     * und abhängig vom Zufall ein Ereignis ausgelöst.
+     *
+     * @param scanner Scanner zum Einlesen von Benutzereingaben
+     */
+
     public void exploreHTW(Scanner scanner) {
+
+        // Überprüft ob alle Unterschriften gesammelt wurden.
 
         if (hasAllSignatures()) {
             meetProfessor(scanner);
@@ -177,6 +199,7 @@ public class EscapeGame {
         System.out.println("You explore the HTW");
 
         // Runden überprüfung
+
         if (round >= RoundLimit) {
             System.out.println("--The doors are closing. Your chance is gone--");
             gameRunning = false;
@@ -188,47 +211,67 @@ public class EscapeGame {
         round = round + 1;
         System.out.println("-- Round: " + round + " / " + RoundLimit + " --");
 
-        // Raum auswählen
+        // Zufäliig ein Raum von 30 Räumen auswähen.
+
         HTWRoom room = rooms[(int) (Math.random() * rooms.length)];
         System.out.println(room.getIdentifier() + ": " + room.getDescription());
 
         double risk = Math.random();
+
         // Mit einer Wahrscheinlichkeit von 20 Prozent verläuft die Erkundung
         // ereignislos.
+
         if (risk < 0.20) {
             System.out.println("Nothing happens.");
             return;
         }
-        // In 52 Prozent der Fälle trifft der Spielcharakter auf ein außerirdisches
+        // In 52 Prozent der Fälle trifft der Hero auf ein außerirdisches
         // Wesen (Alien).
+
         if (risk < 0.72) {
             alienCase(scanner);
             return;
         }
+
+        // In 28 Prozent der Fälle trifft der Hero ein Lehrer
+
         if (risk < 1.00) {
-            lecturerCase(scanner);
+            lecturerCase(scanner, room);
             return;
         }
     }
 
+    /**
+     * Behandelt die Begegnung des Spielers mit einem Alien.
+     * Es wird zufällig entschieden, ob das Alien freundlich oder feindlich ist.
+     * Bei einem feindlichen Alien kann der Spieler fliehen oder kämpfen.
+     *
+     * @param scanner Scanner zum Einlesen der Benutzereingaben
+     */
+
     private void alienCase(Scanner scanner) {
 
+        // Klasse Alien bereitet Unterklassen vor
         Alien alien;
 
+        // Zufällige Entscheidung, ob das Alien freundlich oder böse ist
         if (Math.random() < 0.5) {
             alien = new FriendlyAlien();
         } else {
             alien = new EvilAlien();
         }
 
+        // Ausgabe des Namens und der Begrüßung des Aliens
         System.out.println("You meet an alien: " + alien.getName());
         System.out.println(alien.getGreeting());
 
+        // Falls das Alien freundlich ist, passiert nichts weiter
         if (alien.isFriendly()) {
             System.out.println("The alien is friendly. You continue exploring.");
             return;
         } else {
 
+            // Bei einem bösen Alien muss der Hero folgendes entscheiden.
             System.out.println("The alien is evil, runnnn!!!");
             System.out.println("(1) Fight");
             System.out.println("(2) Flee");
@@ -236,6 +279,7 @@ public class EscapeGame {
 
             String choice = scanner.nextLine();
 
+            // Fluchtversuch
             if (choice.equals("2")) {
                 if (hero.flee()) {
                     System.out.println("You escaped successfully!");
@@ -245,29 +289,53 @@ public class EscapeGame {
                 }
             }
 
+            // Kampf: läuft solange der Held kampffähig ist
+            // und das Alien noch nicht besiegt wurde
+
             while (hero.isOperational() && !alien.isDefeated()) {
 
+                // Held greift das Alien an
                 alien.takeDamage(hero.attack());
 
+                // Überprüfung, ob das Alien besiegt wurde
                 if (alien.isDefeated()) {
                     System.out.println("Alien defeated!");
                     hero.addExperiencePoints(5);
                     return;
                 }
-
+                // Alien greift Hero an
                 hero.takeDamage(3);
             }
-
+            // Falls der Held den Kampf verliert
             System.out.println("You lost the fight!");
             hero.addExperiencePoints(1);
         }
     }
 
-    private void lecturerCase(Scanner scanner) {
+    /**
+     * Behandelt die Begegnung des Spielers mit einem Übungsleiter.
+     * Der Übungsleiter kann den Laufzettel des Heros unterschreiben,
+     * sofern noch keine Unterschrift vorhanden ist.
+     *
+     * @param scanner Scanner für die Benutzereingabe
+     */
 
-        Lecturer lecturer = new Lecturer("...");
+    private void lecturerCase(Scanner scanner, HTWRoom room) {
+
+        // Übungsleiter aus dem Raum wird angezeigt
+
+        Lecturer lecturer = room.getLecturer();
+
+        // WICHTIG: Prüfen, ob überhaupt ein Dozent im Raum ist
+        if (lecturer == null) {
+            System.out.println("There is no lecturer in this room.");
+            return;
+        }
 
         System.out.println("You meet a lecturer: " + lecturer.getName());
+
+        // Prüfen, ob der Übungsleiter noch unterschreiben kann, und kann
+        // dementsprechend Unterschreiben
 
         if (lecturer.isReadyToSign()) {
             hero.signExerciseLeader(lecturer);
@@ -278,7 +346,14 @@ public class EscapeGame {
         }
     }
 
+    /**
+     * Zeigt den aktuellen Status des Helden an.
+     * Dazu gehören Name, Lebenspunkte, Erfahrungspunkte,
+     * aktuelle Runde sowie die Anzahl der gesammelten Unterschriften.
+     */
+
     private void showHeroStatus() {
+
         System.out.println("--- HERO STATUS ---");
 
         System.out.println("Name: " + hero.getName());
@@ -286,9 +361,11 @@ public class EscapeGame {
         System.out.println("XP: " + hero.getExperiencePoints());
         System.out.println("Round: " + round + " /24");
 
+        // Liste der bereits unterschriebenen Übungsleiter
         Lecturer[] list = hero.getSignedExerciseLeaders();
         int signed = 0;
 
+        // Anzahl der vorhandenen Unterschriften zählen
         for (int i = 0; i < list.length; i++) {
             if (list[i] != null) {
                 signed++;
@@ -298,8 +375,15 @@ public class EscapeGame {
         System.out.println("Signatures: " + signed + " /5");
     }
 
+    /**
+     * Zeigt die Checkliste der Dozenten an.
+     * Bereits unterschriebene Dozenten werden mit Namen angezeigt,
+     * fehlende Unterschriften mit Platzhaltern.
+     */
     private void showChecklist() {
+
         System.out.println("--- CHECKLIST ---");
+
         Lecturer[] list = hero.getSignedExerciseLeaders();
         for (int i = 0; i < list.length; i++) {
             if (list[i] != null) {
@@ -309,6 +393,14 @@ public class EscapeGame {
             }
         }
     }
+
+    /**
+     * Ermöglicht dem Spieler, eine Pause einzulegen.
+     * Der Spieler kann zwischen einer kurzen oder langen Pause wählen,
+     * um Lebenspunkte zu regenerieren.
+     *
+     * @param scanner Scanner für die Benutzereingabe
+     */
 
     private void takeRest(Scanner scanner) {
         System.out.println("--- REST ---");
@@ -331,33 +423,52 @@ public class EscapeGame {
         System.out.println("Round: " + round + " /24");
     }
 
+    /**
+     * Beendet das Spiel und setzt den Spielstatus entsprechend.
+     */
     private void exitGame() {
         System.out.println("Leaving the game.");
         gameRunning = false;
         gameFinished = true;
     }
 
+    /**
+     * Prüft, ob der Held alle benötigten Unterschriften gesammelt hat.
+     *
+     * @return true, wenn alle Unterschriften vorhanden sind, sonst false
+     */
     private boolean hasAllSignatures() {
         Lecturer[] list = hero.getSignedExerciseLeaders();
-        int count = 0;
+        int signed = 0;
 
         for (int i = 0; i < list.length; i++) {
             if (list[i] != null) {
-                count++;
+                signed++;
             }
         }
-        return count == list.length;
+        return signed == list.length;
     }
 
+    /**
+     * Startet das Abschlussgespräch mit dem Professor.
+     * Der Spieler muss Fragen beantworten, um das Spiel zu gewinnen.
+     * Es gibt maximal zwei Versuche.
+     *
+     * @param scanner Scanner für die Benutzereingabe
+     */
     private void meetProfessor(Scanner scanner) {
         System.out.println("Professor Majuntke appears!");
         System.out.println(
                 "Professor Majuntke will give you three questions that you must answer correctly to get out of HTW. If you fail this quiz, you have one last attempt.");
 
+        // Erster Versuch
         boolean firstTry = askQuestion(scanner);
 
+        // Bei Erfolg: Spiel gewinnen
         if (firstTry) {
             winGame();
+
+            // Bei Misserfolg: zweiter Versuch
         } else {
             System.out.println("Wrong answer! You get one more chance...");
             boolean secondTry = askQuestion(scanner);
@@ -370,6 +481,12 @@ public class EscapeGame {
         }
     }
 
+    /**
+     * Professorin Majuntke Stellt dem Hero nacheinander Quizfragen.
+     * 
+     * @param scanner Scanner für die Benutzereingabe
+     * @return true, wenn die Frage richtig beantwortet wurde, sonst false
+     */
     private boolean askQuestion(Scanner scanner) {
 
         // Frage 1
@@ -418,6 +535,10 @@ public class EscapeGame {
         return false;
     }
 
+    /**
+     * Beendet das Spiel mit einem Sieg.
+     * Hero hat das Quiz erfolgreich abgeschlossen.
+     */
     private void winGame() {
         System.out.println("Correct! You passed!");
         System.out.println("You receive your certificate.");
@@ -426,6 +547,10 @@ public class EscapeGame {
         gameFinished = true;
     }
 
+    /**
+     * Beendet das Spiel mit einer Niederlage.
+     * Hero hat das Quiz nicht bestanden.
+     */
     private void loseGame() {
         System.out.println("Wrong again!");
         System.out.println("An evil alien has kidnapped Professor Majuntke.");

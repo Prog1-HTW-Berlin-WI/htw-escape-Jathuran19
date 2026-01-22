@@ -2,6 +2,13 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Klasse eines Heros und dessen Eigenschaften 
+ * 
+ * @author Jathuran Sathananthan 
+ * @author Arda Bingöl
+ */
+
 public class Hero implements Serializable {
 
     // Bitte serialVersionUID beibehalten, damit die Klasse bei der
@@ -39,8 +46,12 @@ public class Hero implements Serializable {
 
     // Methoden:
 
-    // Lebenspunkte können Leben verlieren je nach Schaden und die Untergrenze ist 0
-    // Lebenspunkte
+    /**
+     * Verringert die Lebenspunkte um den angegebenen Schaden.
+     * Die Lebenspunkte können dabei nicht unter 0 fallen.
+     *
+     * @param amount Schaden
+     */
     public void takeDamage(int amount) {
         healthPoints -= amount;
         if (healthPoints < 0) {
@@ -48,8 +59,12 @@ public class Hero implements Serializable {
         }
     }
 
-    // Hero kann sich heilen mit kleine/große Verschnaufpause und die Obergrenze ist
-    // 50 Lebenspunkte.
+    /**
+     * Regeneriert die Lebenspunkte des Heros.
+     * Je nach Art der Pause werden unterschiedlich viele Lebenspunkte geheilt.
+     *
+     * @param longRest true für eine lange Pause, false für eine kurze Pause
+     */
     public void regenerate(boolean longRest) {
         if (longRest == false) {
             healthPoints += 3;
@@ -63,7 +78,12 @@ public class Hero implements Serializable {
         }
     }
 
-    // Hero hat 42% chance um zu entkommen
+    /**
+     * Versucht, vor einem Gegner zu fliehen.
+     * Die Flucht gelingt mit einer bestimmten Wahrscheinlichkeit (42 Prozent).
+     * 
+     * @return true, wenn die Flucht erfolgreich ist, sonst false
+     */
     public boolean flee() {
         double risk = Math.random();
         if (risk < 0.42) {
@@ -73,6 +93,12 @@ public class Hero implements Serializable {
         }
     }
 
+    /**
+     * Führt einen Angriff aus und berechnet den verursachten Schaden.
+     * Der Schaden hängt von den Erfahrungspunkten ab und kann variieren.
+     *
+     * @return verursachter Schaden als Ganzzahl
+     */
     public int attack() {
         double damage = experiencePoints * 2.3 + 1;
         double chance = Math.random();
@@ -85,16 +111,26 @@ public class Hero implements Serializable {
         return (int) damage;
     }
 
+    /**
+     * Fügt einen Übungsleiter zur Unterschriftenliste des Heros hinzu.
+     * Der Übungsleiter wird nur eingetragen, wenn er noch nicht vorhanden ist.
+     *
+     * @param lecturer Übungsleiter, der unterschreiben soll
+     */
     public void signExerciseLeader(Lecturer lecturer) {
+        // Abbrechen, falls kein Übungsleiter übergeben wurde
         if (lecturer == null) {
             return;
         }
+
+        // Prüfen, ob der Übungsleiter bereits unterschrieben hat
         for (int i = 0; i < signedExerciseLeaders.length; i++) {
             if (signedExerciseLeaders[i] != null &&
                     signedExerciseLeaders[i].getName().equals(lecturer.getName())) {
                 return;
             }
         }
+        // Prüfen, ob der Übungsleiter bereits unterschrieben hat
         for (int i = 0; i < signedExerciseLeaders.length; i++) {
             if (signedExerciseLeaders[i] == null) {
                 signedExerciseLeaders[i] = lecturer;
@@ -104,10 +140,20 @@ public class Hero implements Serializable {
         }
     }
 
+    /**
+     * Erhöht die Erfahrungspunkte des Heros.
+     *
+     * @param experiencePoints Anzahl der hinzuzufügenden Erfahrungspunkte
+     */
     public void addExperiencePoints(int experiencePoints) {
         this.experiencePoints += experiencePoints;
     }
 
+    /**
+     * Prüft, ob der Held noch kampffähig ist.
+     *
+     * @return true, wenn der Held noch Lebenspunkte hat, sonst false
+     */
     public boolean isOperational() {
         if (healthPoints <= 0) {
             System.out.println("--You are dead!!!--");

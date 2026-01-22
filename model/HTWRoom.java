@@ -3,6 +3,13 @@ package model;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Klasse eines HTW Rooms 
+ * 
+ * @author Jathuran Sathananthan 
+ * @author Arda Bingöl
+ */
+
 public class HTWRoom implements Serializable {
 
     // Bitte serialVersionUID beibehalten, damit die Klasse bei der

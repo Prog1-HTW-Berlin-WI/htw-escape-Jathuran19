@@ -21,6 +21,7 @@ public class EscapeApp {
 
     /**
      * Spielstart und je nach Wahl wird man zum Menü weitergeleitet
+     * @param args 
      */
     public static void main(String[] args) {
         System.out.println("Welcome to the HTW escape");
@@ -38,6 +39,7 @@ public class EscapeApp {
 
     /**
      * zeigt Menüansicht an
+     * Abhängig von aktuellen Spielstand werden die Menüoptionen angezeigt
      */
     private void showMainMenu() {
         System.out.println("You're in the main menu");
@@ -63,7 +65,6 @@ public class EscapeApp {
 
     /**
      * User führt eine Eingabe aus
-     * 
      * @return Benutzereingabe als String
      */
     private String readUserInput() {
@@ -74,8 +75,12 @@ public class EscapeApp {
     }
 
     /**
-     * Fehlereingabe wird dem Benutzer gemeldet
+     * Fehlereingabe wird dem Benutzer gemeldet.
+     * Verarbeitet die Benutzereingabe aus dem Hauptmenü und führt die passende Aktion aus.
+     * Je nach Auswahl wird ein Spiel gestartet, fortgesetzt, geladen, gespeichert,
+     * ein Spielstand gelöscht oder das Programm beendet.
      * 
+     * @param input die vom Benutzer eingegebene Menüoption
      */
     private void handleUserInput(String input) {
         switch (input) {

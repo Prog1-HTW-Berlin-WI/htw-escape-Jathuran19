@@ -2,6 +2,13 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Klasse eines Übungsleiters und dessen Eigenschaften
+ * 
+ * @author Arda Bingöl
+ * @author Jathuran Sathananthan
+ */
+
 public class Lecturer implements Serializable {
 
     // Bitte serialVersionUID beibehalten, damit die Klasse bei der
@@ -26,10 +33,17 @@ public class Lecturer implements Serializable {
     }
 
     // Methoden:
+
+    /**
+     * Prüft, ob der Übungsleiter noch unterschreiben kann.
+     *
+     * @return true, wenn noch keine Unterschrift erfolgt ist, sonst false
+     */
     public boolean isReadyToSign() {
         return !hasSigned;
     }
 
+    // Markiert den Übungsleiter als Unterschrieben
     public void sign() {
         hasSigned = true;
     }
