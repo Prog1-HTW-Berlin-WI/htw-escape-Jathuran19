@@ -109,11 +109,11 @@ public class EscapeGame {
         rooms[23] = new HTWRoom("216", "Classroom", null);
         rooms[24] = new HTWRoom("217", "Classroom", null);
         rooms[25] = new HTWRoom("218", "Classroom", null);
-        rooms[26] = new HTWRoom("000", "Office corridor", null);
-        rooms[27] = new HTWRoom("111", "Office corridor", null);
-        rooms[28] = new HTWRoom("222", "Office corridor", null);
-        rooms[29] = new HTWRoom("333", "Office corridor", null);
-        rooms[30] = new HTWRoom("123", "Office corridor", null);
+        rooms[26] = new HTWRoom("207", "Boys restroom", null);
+        rooms[27] = new HTWRoom("155", "Boys restroom", null);
+        rooms[28] = new HTWRoom("048", "Boys restroom", null);
+        rooms[29] = new HTWRoom("156", "Girls restroom", null);
+        rooms[30] = new HTWRoom("206", "Girls restroom", null);
 
     }
 
